@@ -1,9 +1,10 @@
 const nodemailer = require("nodemailer");
-const generateToken = require("./generate-token");
+const generateCode = require("./generate-code");
 const getVerificationMail = require("./verification-mail");
 const getResetPasswordMail = require("./reset-password-mail");
 const EmailType = require("./email-types");
 const CustomError = require("./custom-error");
+const getWelcomeMail = require("./welcome-mail");
 
 const emailFunctions = {
   [EmailType.VERIFICATION]: (user, code) => getVerificationMail(user, code),
@@ -16,7 +17,7 @@ const handleEmail = async (user, type) => {
   }
   let code = null;
   if (type === EmailType.VERIFICATION || type === EmailType.RESET_PASSWORD) {
-    code = await generateToken(user, type);
+    code = await generateCode(user, type);
   }
 
   

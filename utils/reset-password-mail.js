@@ -1,7 +1,7 @@
 const path = require("path");
 
-const getResetPasswordMail = (user, resetToken) => {
-  const resetLink = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
+const getResetPasswordMail = (user, code) => {
+  const resetLink = `${process.env.CLIENT_URL}/auth/reset-password/${code}`;
 
   const mail = {
     from: `${process.env.SITE_NAME} <${process.env.SITE_EMAIL}>`,

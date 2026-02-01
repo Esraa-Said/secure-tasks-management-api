@@ -1,8 +1,10 @@
 const User = require("../models/user-model");
 const asyncWrapper = require("../utils/async-wrapper");
+const CustomError = require("../utils/custom-error");
 const handleEmail = require("../utils/email-handler");
 const EmailType = require("../utils/email-types");
 const httpStatusText = require("../utils/http-status-text");
+const jsonwebtoken = require("jsonwebtoken");
 
 const register = asyncWrapper(async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -20,4 +22,38 @@ const register = asyncWrapper(async (req, res, next) => {
   });
 });
 
-module.exports = { register };
+const verifyAccount = asyncWrapper(async (req, res, next) => {
+  const code = req.params.code;
+
+  let decoded;
+  try {
+    decoded = jsonwebtoken.verify(code, process.env.JWT_SECRET);
+  } catch (err) {
+    return next(new CustomError("Invalid or expired verification link", 400));
+  }
+
+  const { userId } = decoded;
+
+  const user = await User.findByPk(userId);
+  if (!user) return next(new CustomError("User not found", 404));
+  if (user.isVerified)
+    return next(new CustomError("User already verified", 400));
+
+  user.isVerified = true;
+  await user.save();
+  handleEmail(user, EmailType.WELCOME);
+
+  const authToken = jsonwebtoken.sign(
+    { userId: user.id, email: user.email },
+    process.env.JWT_SECRET,
+    { expiresIn: process.env.USER_REGISTER_EXPIRATION_IN || "1h" },
+  );
+
+  res.status(200).json({
+    status: httpStatusText.SUCCESS,
+    message: "User verified successfully",
+    token: authToken,
+  });
+});
+
+module.exports = { register, verifyAccount };

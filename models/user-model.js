@@ -69,22 +69,22 @@ const User = sequelize.define(
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-    verificationToken: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    verificationExpiry: {
-      type: DataTypes.DATE,
-      allowNull: true,
-    },
-    resetPasswordToken: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    resetPasswordExpiry: {
-      type: DataTypes.DATE,
-      allowNull: true,
-    },
+    // verificationToken: {
+    //   type: DataTypes.STRING,
+    //   allowNull: true,
+    // },
+    // verificationExpiry: {
+    //   type: DataTypes.DATE,
+    //   allowNull: true,
+    // },
+    // resetPasswordToken: {
+    //   type: DataTypes.STRING,
+    //   allowNull: true,
+    // },
+    // resetPasswordExpiry: {
+    //   type: DataTypes.DATE,
+    //   allowNull: true,
+    // },
   },
   {
     tableName: "users",

@@ -1,7 +1,7 @@
 const path = require("path");
 
 const getVerificationMail = (user, code) => {
-  const verifyLink = `${process.env.CLIENT_URL}/verify-user/${code}`;
+  const verifyLink = `${process.env.CLIENT_URL}/auth/verify-user/${code}`;
 
   const mail = {
     from: `${process.env.SITE_NAME} <${process.env.SITE_EMAIL}>`,
