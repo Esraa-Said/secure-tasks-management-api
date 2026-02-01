@@ -4,11 +4,11 @@ const morgan = require('morgan');
 const sequelize = require("./config/connectDB");
 
 
-sequelize.authenticate().then(() => {
-   console.log('Connection has been established successfully.');
-}).catch((error) => {
-   console.error('Unable to connect to the database: ', error);
-});
+// sequelize.authenticate().then(() => {
+//    console.log('Connection has been established successfully.');
+// }).catch((error) => {
+//    console.error('Unable to connect to the database: ', error);
+// });
 
 
 const app = express();
@@ -25,6 +25,12 @@ app.get('/', (req, res)=>{
 
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server is listening at port ${PORT}`);
-});
+sequelize
+	.sync()
+	.then(() => {
+		app.listen(process.env.PORT);
+		console.log("Server listening on port " + PORT);
+	})
+	.catch(err => {
+		console.log(err);
+	});
