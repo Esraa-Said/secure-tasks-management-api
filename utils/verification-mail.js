@@ -4,9 +4,9 @@ const getVerificationMail = (user, code) => {
   const verifyLink = `${process.env.CLIENT_URL}/verify-user/${code}`;
 
   const mail = {
-    from: `${process.env.siteName} <${process.env.SITE_EMAIL}>`,
+    from: `${process.env.SITE_NAME} <${process.env.SITE_EMAIL}>`,
     to: user.email,
-    subject: `Verify your ${process.env.siteName} account`,
+    subject: `Verify your ${process.env.SITE_NAME} account`,
     text: `Hello ${user.name}, please verify your account by clicking this link: ${verifyLink}`,
     attachments: [
       {
@@ -18,10 +18,10 @@ const getVerificationMail = (user, code) => {
     html: `
       <div style="font-family:Arial, sans-serif; max-width:600px; margin:auto; padding:20px; border:1px solid #ddd; border-radius:10px;">
         <div style="text-align:center;">
-          <img src="cid:logo" alt="${process.env.siteName} Logo" width="250" style="margin-bottom:20px;" />
+          <img src="cid:logo" alt="${process.env.SITE_NAME} Logo" width="250" style="margin-bottom:20px;" />
         </div>
         <h2 style="color:#333;">Hello ${user.name},</h2>
-        <p style="color:#555;">Thank you for registering with <strong>${process.env.siteName}</strong>.</p>
+        <p style="color:#555;">Thank you for registering with <strong>${process.env.SITE_NAME}</strong>.</p>
         <p>Please verify your account by clicking the button below:</p>
         <div style="text-align:center; margin:20px 0;">
           <a href="${verifyLink}" 
@@ -32,7 +32,7 @@ const getVerificationMail = (user, code) => {
         <p style="color:#555;">This link will expire in ${process.env.EXPIRATION_IN_MINUTES} minutes.</p>
         <p style="font-size:12px; color:#888; border-top:1px solid #eee; padding-top:10px;">
           If you didn’t create this account, please ignore this email.<br>
-          &copy; ${new Date().getFullYear()} ${process.env.siteName}. All rights reserved.
+          &copy; ${new Date().getFullYear()} ${process.env.SITE_NAME}. All rights reserved.
         </p>
       </div>
     `,

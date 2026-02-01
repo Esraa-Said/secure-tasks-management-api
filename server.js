@@ -4,6 +4,8 @@ const morgan = require("morgan");
 const sequelize = require("./config/connectDB");
 const globalErrorHandler = require("./middlewares/global-error-middleware");
 const CustomError = require("./utils/custom-error");
+const userRouter = require("./routes/auth-routes");
+
 
 // sequelize.authenticate().then(() => {
 //    console.log('Connection has been established successfully.');
@@ -16,9 +18,7 @@ const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
 
-app.get("/", (req, res) => {
-  res.status(200).send(`<h1>HEllo</h1>`);
-});
+app.use('/auth', userRouter);
 
 app.use((req, res, next) => {
   next(new CustomError(`Invalid url`, 404));

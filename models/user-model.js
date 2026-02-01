@@ -3,6 +3,14 @@ const sequelize = require("../config/connectDB");
 const CustomError = require("../utils/custom-error");
 const bcrypt = require("bcryptjs");
 
+const beforeSave = async (user) => {
+  if (user.name) user.name = user.name.trim();
+  if (user.email) user.email = user.email.trim();
+  if (user.changed("password")) {
+    user.password = await bcrypt.hash(user.password, 10);
+  }
+};
+
 const User = sequelize.define(
   "User",
   {
@@ -13,8 +21,11 @@ const User = sequelize.define(
     },
     name: {
       type: DataTypes.STRING(100),
-      allowNull: { msg: "Name must have a value" },
+      allowNull: false,
       validate: {
+        notNull: {
+          msg: "Name is required",
+        },
         notEmpty: { msg: "Name cannot be empty" },
         len: {
           args: [2, 100],
@@ -24,17 +35,23 @@ const User = sequelize.define(
     },
     email: {
       type: DataTypes.STRING(100),
-      allowNull: { msg: "Email must have a value" },
+      allowNull: false,
       unique: { msg: "User already exists" },
       validate: {
+        notNull: {
+          msg: "Email is required",
+        },
         notEmpty: { msg: "Email cannot be empty" },
         isEmail: { msg: "Must be a valid email address" },
       },
     },
     password: {
       type: DataTypes.STRING(255),
-      allowNull: { msg: "Password must have a value" },
+      allowNull: false,
       validate: {
+        notNull: {
+          msg: "Password is required",
+        },
         notEmpty: { msg: "Password cannot be empty" },
         len: { args: [6, 255], msg: "Password must be at least 6 characters" },
         isStrong(value) {
@@ -66,7 +83,7 @@ const User = sequelize.define(
     },
     resetPasswordExpiry: {
       type: DataTypes.DATE,
-      allowNull: true, 
+      allowNull: true,
     },
   },
   {
@@ -78,13 +95,5 @@ const User = sequelize.define(
     },
   },
 );
-
-const beforeSave = async (user) => {
-  if (user.name) user.name = user.name.trim();
-  if (user.email) user.email = user.email.trim();
-  if (user.changed("password")) {
-    user.password = await bcrypt.hash(user.password, 10);
-  }
-};
 
 module.exports = User;

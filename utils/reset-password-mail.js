@@ -4,9 +4,9 @@ const getResetPasswordMail = (user, resetToken) => {
   const resetLink = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
 
   const mail = {
-    from: `${process.env.siteName} <${process.env.SITE_EMAIL}>`,
+    from: `${process.env.SITE_NAME} <${process.env.SITE_EMAIL}>`,
     to: user.email,
-    subject: `Reset your ${process.env.siteName} password`,
+    subject: `Reset your ${process.env.SITE_NAME} password`,
     text: `Hello ${user.name}, you requested a password reset. Click this link to reset your password: ${resetLink}`,
     attachments: [
       {
@@ -18,10 +18,10 @@ const getResetPasswordMail = (user, resetToken) => {
     html: `
       <div style="font-family:Arial, sans-serif; max-width:600px; margin:auto; padding:20px; border:1px solid #ddd; border-radius:10px;">
         <div style="text-align:center;">
-          <img src="cid:logo" alt="${process.env.siteName} Logo" width="250" style="margin-bottom:20px;" />
+          <img src="cid:logo" alt="${process.env.SITE_NAME} Logo" width="250" style="margin-bottom:20px;" />
         </div>
         <h2 style="color:#333;">Hello ${user.name},</h2>
-        <p style="color:#555;">We received a request to reset your password for your <strong>${process.env.siteName}</strong> account.</p>
+        <p style="color:#555;">We received a request to reset your password for your <strong>${process.env.SITE_NAME}</strong> account.</p>
         <p>Please click the button below to reset your password:</p>
         <div style="text-align:center; margin:20px 0;">
           <a href="${resetLink}" 
@@ -32,7 +32,7 @@ const getResetPasswordMail = (user, resetToken) => {
         <p style="color:#555;">This link will expire in ${process.env.EXPIRATION_IN_MINUTES} minutes.</p>
         <p style="font-size:12px; color:#888; border-top:1px solid #eee; padding-top:10px;">
           If you didn’t request a password reset, please ignore this email.<br>
-          &copy; ${new Date().getFullYear()} ${process.env.siteName}. All rights reserved.
+          &copy; ${new Date().getFullYear()} ${process.env.SITE_NAME}. All rights reserved.
         </p>
       </div>
     `,

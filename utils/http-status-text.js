@@ -3,4 +3,4 @@ const FAIL = 'Fail';
 const SUCCESS = "Success";
 
 
-module.exports = {ERROR, FAIL, SUCCESS, PENDING};
+module.exports = {ERROR, FAIL, SUCCESS};
