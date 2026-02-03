@@ -22,7 +22,7 @@ const getWelcomeMail = (user) => {
         <p style="color:#555;">Welcome to <strong>${process.env.SITE_NAME}</strong>! We're thrilled to have you as part of our community.</p>
         <p style="color:#555;">You can now log in and explore all the features available to you.</p>
         <div style="text-align:center; margin:20px 0;">
-          <a href="${process.env.CLIENT_URL}/login" 
+          <a href="${process.env.CLIENT_URL}" 
              style="background-color:#28a745; color:white; padding:12px 25px; border-radius:6px; text-decoration:none; font-weight:bold;">
              Go to Dashboard
           </a>
