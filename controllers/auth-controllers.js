@@ -88,7 +88,7 @@ const login = asyncWrapper(async (req, res, next) => {
   res.status(200).json({
     status: httpStatusText.SUCCESS,
     data: { user: { email: user.email, name: user.name } },
-    message: 'User login successfully',
+    message: "User login successfully",
     token: authToken,
   });
 });
@@ -97,10 +97,11 @@ const resendVerification = asyncWrapper(async (req, res, next) => {
   const { email } = req.body;
 
   const user = await User.findOne({ where: { email } });
-  
+
   if (!user) {
-    
-    return next(new CustomError("User not found, Create an account first", 404));
+    return next(
+      new CustomError("User not found, Create an account first", 404),
+    );
   }
   if (user.isVerified) {
     return next(new CustomError("Account already verified", 400));
@@ -118,10 +119,12 @@ const forgetPasswordEmail = asyncWrapper(async (req, res, next) => {
   const { email } = req.body;
 
   const user = await User.findOne({ where: { email } });
+  // protect
   if (!user) {
-    return next(
-      new CustomError("A reset password link has been sent to your email", 404),
-    );
+    return res.status(200).json({
+      status: httpStatusText.SUCCESS,
+      message: "A reset password link has been sent to your email",
+    });
   }
 
   await handleEmail(user, EmailType.RESET_PASSWORD);
@@ -167,12 +170,10 @@ const resetPassword = asyncWrapper(async (req, res, next) => {
   user.password = password;
   await user.save();
   await handleEmail(user, EmailType.PASSWORD_CHANGED);
-  res
-    .status(200)
-    .json({
-      status: httpStatusText.SUCCESS,
-      message: "Password has been reset successfully",
-    });
+  res.status(200).json({
+    status: httpStatusText.SUCCESS,
+    message: "Password has been reset successfully",
+  });
 });
 
 module.exports = {
